@@ -67,15 +67,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					$user_registration_status	=	$this->user_lib->save_user($user_data);
 					
 					if(empty($user_registration_status)) {
-						$flash_message	=	"<div class='ui-state-error'>Uh-oh something went wrong! Please try again later!!</div>";
+						$flash_message	=	"<div class='alert alert-danger'>Uh-oh something went wrong! Please try again later!!</div>";
 					} else {
-						$flash_message	=	"<div class='ui-state-highlight'>User Registration Successful! Please Login to Continue!!</div>";
+						$flash_message	=	"<div class='alert alert-success'>User Registration Successful! Please Login to Continue!!</div>";
+						$this->session->set_flashdata("message",$flash_message);
+						redirect($this->config->item("base_url").$this->config->item("Cont_login"));
 					}
 				} else {
-					$flash_message	=	"<div class='ui-state-highlight'>User exists with the given Email Id! Please try again later!!</div>";
+					$flash_message	=	"<div class='alert alert-danger'>User exists with the given Email Id! Please try again later!!</div>";
 				}
 				$this->session->set_flashdata("message",$flash_message);
-				redirect($this->config->item("base_url").$this->config->item("Cont_login"));
+				redirect($this->config->item("base_url").$this->config->item("Cont_registration"));
 			}
 
 		}
@@ -113,13 +115,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$user_validated	=	$this->user_lib->validate_user($user_data);
 
 				if(!empty($user_validated)) {
-					$session_data	=	array('email'=>$user_data["email"]);
+					$session_data	=	array(
+											'user_id'	=>	$user_validated['user_id'],
+											'email'		=>	$user_data["email"]
+										);
 
 					$this->session->set_userdata('ci_session',$session_data);
 
 					redirect($this->config->item("base_url").$this->config->item("Cont_catalog"));
 				} else {
-					$flash_message	=	"<div class='ui-state-highlight'>Uh-Oh something went wrong! Please try again later!!</div>";
+					$flash_message	=	"<div class='alert alert-success'>Uh-Oh something went wrong! Please try again later!!</div>";
 
 					$this->session->set_flashdata("message",$flash_message);
 					redirect($this->config->item("base_url").$this->config->item("Cont_login"));
@@ -132,8 +137,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		 */
 		function registration_validations() {
 			$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
-			$this->form_validation->set_rules('password', 'Password', 'required|trim');
-			$this->form_validation->set_rules('confirmpassword', 'Password Confirmation', 'required|trim');
+			$this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]');
+			$this->form_validation->set_rules('confirmpassword', 'Confirm Password', 'required|trim|matches[password]');
 
 			if($this->form_validation->run() == FALSE) {
 				return false;

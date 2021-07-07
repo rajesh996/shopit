@@ -20,7 +20,8 @@
 		<input type="password" value="" class="form-control" name="password" placeholder="password"><br><br>
 	</div>
 
-	<div><input type="submit" class="btn btn-success" value="Login" value="" name="send" /></div>
-
+	<div class="form-group">
+		<input type="submit" class="btn btn-success" value="Login" value="" name="send" />
+	</div>
 
 </form>

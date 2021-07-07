@@ -54,7 +54,7 @@ class User_lib {
 		$user_validated	=	$this->CI->user_model->validate_user($email, $password);
 
 		if(!empty($user_validated)) {
-			return true;
+			return $user_validated;
 		} else {
 			return false;
 		}

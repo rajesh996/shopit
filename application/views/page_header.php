@@ -7,8 +7,9 @@
 	}
 
 	$base_url		=	$this->config->item("base_url");
+	$assets_folder	=	$this->config->item("assets_folder");
 
-	$register_url	=	$base_url.$this->config->item("Cont_register");
+	$register_url	=	$base_url.$this->config->item("Cont_registration");
 	$login_url		=	$base_url.$this->config->item("Cont_login");
 	$logout_url		=	$base_url.$this->config->item("Cont_logout");
 
@@ -26,9 +27,18 @@
 	<!-- <link rel="stylesheet" type="text/css" media="screen" href="https://bootswatch.com/4/flatly/bootstrap.min.css" />
 	<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 
+	<link rel="stylesheet" href="<?php echo $assets_folder."/css/catalog.css"; ?>">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<?php
+		if(!empty($data["js"])) {
+			foreach($data["js"] as $js) {
+				echo "<script src='".$base_url."application/assets/js/".$js.".js' ></script>";
+			}
+		}
+	?>
 
 	<script>
 		$(document).ready(function() {
